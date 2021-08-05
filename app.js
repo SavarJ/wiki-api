@@ -77,8 +77,7 @@ app
 app
   .route("/articles/:articleTitle")
   .get((req, res) => {
-    const articleTitle = req.params.articleTitle;
-    Article.findOne({ title: articleTitle }, (err, foundList) => {
+    Article.findOne({ title: req.params.articleTitle }, (err, foundList) => {
       if (err) {
         res.send(err);
       } else if (!foundList) {
@@ -100,7 +99,36 @@ app
         if (err) {
           res.send(err);
         } else {
-          res.send("Successfully updated document");
+          res.send("Successfully updated document with put request");
+        }
+      }
+    );
+  })
+  .patch((req, res) => {
+    Article.updateOne(
+      { title: req.params.articleTitle },
+      req.body,
+      { runValidators: true },
+      (err) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send("Successfully updated document with patch request");
+        }
+      }
+    );
+  })
+  .delete((req, res) => {
+    Article.findOneAndDelete(
+      { title: req.params.articleTitle },
+      { runValidators: true },
+      (err, foundList) => {
+        if (err) {
+          res.send(err);
+        } else if (!foundList) {
+          res.send("Article not found so could not be deleted");
+        } else {
+          res.send("Sucessfully deleted article");
         }
       }
     );
