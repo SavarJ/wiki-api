@@ -1,5 +1,4 @@
 const express = require("express");
-const ejs = require("ejs");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -111,10 +110,9 @@ app
       { runValidators: true },
       (err) => {
         if (err) {
-          res.send(err);
-        } else {
-          res.send("Successfully updated document with patch request");
+          return res.send(err);
         }
+        res.send("Successfully updated document with patch request");
       }
     );
   })
